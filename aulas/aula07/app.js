@@ -20,7 +20,13 @@ app.get('/tarefas', (req, res) => {
 });
 
 app.post("/tarefas", (req, res) => {
-    res.status(201).json({});
+    const novaTarefa = {
+        id: tarefas.length + 1,
+        nome: req.body.nome,
+        concluida: false,
+    }
+    tarefas.push(novaTarefa);
+    res.status(201).json(novaTarefa);
 });
 
 module.exports = app;

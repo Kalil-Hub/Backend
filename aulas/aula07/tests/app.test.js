@@ -15,6 +15,10 @@ describe('Testes da API Tarefas', () => {
         const dados = {nome: "Estudar para P1" };
         const response = await request.post('/tarefas').send(dados);
         expect(response.status).toBe(201);
+        expect(response.headers['content-type']).toMatch(/json/);
+        expect(response.body.id).toBeDefined();
+        expect(response.body.nome).toBe(dados.nome);
+        expect(response.body.concluida).toBe(false);
     });
 });
 
