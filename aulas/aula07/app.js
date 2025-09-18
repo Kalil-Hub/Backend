@@ -13,4 +13,14 @@ app.use(cookieParser());
 
 app.use('/', indexRouter);
 
+const tarefas = [];
+
+app.get('/tarefas', (req, res) => {
+    res.json(tarefas);
+});
+
+app.post("/tarefas", (req, res) => {
+    res.status(201).json({});
+});
+
 module.exports = app;
