@@ -11,7 +11,7 @@ const criarTarefa = (req, res) => {
 
 const pesquisarId = (req, res) => {
   const { id } = req.params;
-  const tarefaEncontrada = tarefas.find((item) => item.id === parseInt(id));
+  const tarefaEncontrada = model.pesquisarId(id);
   if (tarefaEncontrada) return res.json(tarefaEncontrada);
   res.status(404).json({ msg: "Tarefa não encontrada" });
 };
