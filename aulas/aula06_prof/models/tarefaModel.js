@@ -19,13 +19,20 @@ const pesquisarId = (id) => {
 } 
 
 const alterar = (tarefa) => {
-  const tarefaEncontrada = tarefas.find((item) => item.id === parseInt(id));
+  const tarefaEncontrada = tarefas.find((item) => item.id === parseInt(tarefa.id));
   if (tarefaEncontrada) {
-    tarefaEncontrada.nome = req.body.nome;
-    tarefaEncontrada.concluida = req.body.concluida;
-    return res.json(tarefaEncontrada);
+    tarefaEncontrada.nome = tarefa.nome;
+    tarefaEncontrada.concluida = tarefa.concluida;
   }
+  return tarefaEncontrada;
 }
 
+const excluir = (id) => {
+  const posicao = tarefas.findIndex((item) => item.id === parseInt(id));
+  if (posicao >= 0) {
+    tarefas.splice(posicao, 1);
+  }
+  return posicao;
+}
 
-module.exports = { criar, listar, pesquisarId };
+module.exports = { criar, listar, pesquisarId, alterar, excluir };
