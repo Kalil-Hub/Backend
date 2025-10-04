@@ -1,46 +1,50 @@
-const model = require("../models/tarefaModel");
-const listarTarefas = (req, res) => {
-  const tarefas = model.listar();
-  res.json(tarefas);
-};
+const tarefaModel = require("../models/tarefaModel");
 
-const criarTarefa = (req, res) => {
-  const novaTarefa = model.criar(req.body);
-  res.status(201).json(novaTarefa);
-};
-
-const pesquisarId = (req, res, next) => {
-  const { id } = req.params;
-  const tarefaEncontrada = model.pesquisarId(id);
-  if (tarefaEncontrada) {
-    req.tarefa = tarefaEncontrada;
-    return next();
-  }
-
-  res.status(404).json({ msg: "Tarefa não encontrada" });
-};
-
-const exibirTarefa = (req, res) => {
-  res.json(req.tarefa);
+function listar(req, res) {
+  const resultado = tarefaModel.listar();
+  res.json(resultado);
 }
 
-const alterarTarefa = (req, res) => {
-  const { id } = req.params;
-  const tarefaEncontrada = model.alterar({id, ...req.body});
-  return res.json(tarefaEncontrada);
-};
+function buscarPeloId(req, res) {
+  const tarefaId = req.params.id;
+  const resultado = tarefaModel.buscarPeloId(tarefaId);
+  if (resultado) {
+    res.json(resultado);
+  } else {
+    res.status(404).json({ msg: "Tarefa não encontrada" });
+  }
+}
 
-const apagarTarefa = (req, res) => {
-  const { id } = req.params;
-  model.excluir(id);
-  return res.status(204).end();
-};
+function criar(req, res) {
+  const tarefa = req.body;
+  const resultado = tarefaModel.criar(tarefa);
+  res.status(201).json(resultado);
+}
+
+function atualizar(req, res) {
+  const tarefa = req.body;
+  const resultado = tarefaModel.atualizar(tarefa);
+  if (resultado) {
+    res.json(resultado);
+  } else {
+    res.status(404).json({ msg: "Tarefa não encontrada" });
+  }
+}
+
+function remover(req, res) {
+  const tarefaId = req.params.id;
+  const resultado = tarefaModel.remover(tarefaId);
+  if (resultado) {
+    res.status(204).send();
+  } else {
+    res.status(404).json({ msg: "Tarefa não encontrada" });
+  }
+}
 
 module.exports = {
-  listarTarefas,
-  criarTarefa,
-  pesquisarId,
-  exibirTarefa,
-  alterarTarefa,
-  apagarTarefa,
+  listar,
+  buscarPeloId,
+  criar,
+  atualizar,
+  remover
 };
