@@ -1,11 +1,7 @@
 const supertest = require('supertest')
-
 const app = require('../app')
-
 const request = supertest(app)
-
 const url = '/tarefas'
-
 let id = null
 
 describe('Testes do recurso /tarefas', () => {
@@ -13,6 +9,8 @@ describe('Testes do recurso /tarefas', () => {
         const response = await request.post(url).send({ nome: "Estudar" })
         expect(response.status).toBe(201)
         expect(response.body.id).toBeDefined()
+        expect(response.body.nome).toBe("Estudar")
+        expect(response.body.concluida).toBe(false)
         id = response.body.id
     })
 
@@ -25,7 +23,13 @@ describe('Testes do recurso /tarefas', () => {
     test("GET /id deve retornar 200", async() => {
         const response = await request.get(`${url}/${id}`)
         expect(response.status).toBe(200)
-        expect(response.body.id).toBeDefined
+        expect(response.body.id).toBeDefined()
+    })
+
+    test("GET /id deve retornar 404", async() => {
+        const response = await request.get(`${url}/0000000000000000000000`)
+        expect(response.status).toBe(404)
+        expect(response.body.msg).toBe("Tarefa não encontrada")
     })
 
     test("PUT /id deve retornar 200", async() => {
@@ -36,8 +40,20 @@ describe('Testes do recurso /tarefas', () => {
             expect(response.body.id).toBeDefined()
         })
 
+    test("PUT /id deve retornar 404", async() => {
+        const response = await request.put(`${url}/0000000000000000000000`)
+        expect(response.status).toBe(404)
+        expect(response.body.msg).toBe("Tarefa não encontrada")
+    })
+
     test("DELETE /id deve retornar 204", async() => {
         const response = await request.delete(`${url}/${id}`)
         expect(response.status).toBe(204)
+    })
+
+    test("DELETE /id deve retornar 404", async() => {
+        const response = await request.delete(`${url}/0000000000000000000000`)
+        expect(response.status).toBe(404)
+        expect(response.body.msg).toBe("Tarefa não encontrada")
     })
 })
