@@ -1,10 +1,6 @@
-
 const supertest = require('supertest');
-
 const app = require('../app'); 
-
 const request = supertest(app);
-
 let token;
 
 describe('API Pratica 08 - Testes de Autenticação e Rotas', () => {

@@ -11,7 +11,6 @@ router.post('/login', (req, res) => {
         res.status(500).json({ msg: error.message });
     }
 });
-
 router.post('/renovar', authMiddleware.verificarToken, (req, res) => {
     try {
         const payload = { email: req.usuario.email }; 

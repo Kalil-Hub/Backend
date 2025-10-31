@@ -17,7 +17,6 @@ function verificarToken(req, res, next) {
         return res.status(401).json({ msg: 'Token inválido' });
     }
 }
-
 function gerarToken(payload) {
     const expiresIn = 120;
     try {
@@ -26,7 +25,6 @@ function gerarToken(payload) {
         throw new Error('Erro ao gerar o token');
     }
 }
-
 module.exports = {
     verificarToken,
     gerarToken
